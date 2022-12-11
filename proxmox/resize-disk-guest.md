@@ -1,4 +1,7 @@
-# Resize disk
+# <a id="top"></a> Resize guest disk
+
+* [Back](readme.md)
+---
 
 ## Host action
 
@@ -41,3 +44,7 @@
     # Confirm results
     sudo fdisk -l
     ```
+
+[To top]
+
+[To top]: #top
