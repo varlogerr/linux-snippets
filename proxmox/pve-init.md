@@ -3,67 +3,80 @@
 * [Back](readme.md)
 ---
 * [Fix locale](#fix-locale)
+* [Post-install](#post-install)
 * [Install basic tools](#install-basic-tools)
-* [Install more goodies](#install-basic-tools)
-* [Install PVE helpers](#install-pve-helpers)
+* [Install goodies](#install-basic-tools)
+* [Upgrade](#upgrade)
+---
+* [Fix Minisforum USB issue](#post-install)
+* [Cergiticates](#certificates)
 * [Join host logical volumes](#join-host-logical-volumes)
 * [Configure storages](#configure-storages)
 ---
 
-## Certificates
-
-Place to `/etc/pve/nodes/pve1/pveproxy-ssl.{key,pem}` and
-```sh
-systemctl restart pveproxy
-```
-
 ## Fix locale
 
-[Reference article](https://www.thomas-krenn.com/en/wiki/Perl_warning_Setting_locale_failed_in_Debian)
+[Reference article](https://serverfault.com/a/446048)
 
 ```sh
-# Generate missing locales if required.
-# Substitute en_US with required one
-locale-gen en_US.UTF-8
+# View missing locale vars
+locale
+# Update missing variables
+update-locale LANGUAGE=en_US.UTF-8 LC_ALL=en_US.UTF-8
+```
+
+Logout and login back.
+
+[To top]
+
+## Post-install
+
+```sh
+~/ls-tools/bin/ls.pve.disable-enterprise-repo.sh
+~/ls-tools/bin/ls.pve.enable-nosubscription-repo.sh
+~/ls-tools/bin/ls.pve.disable-subscription-nag.sh
 ```
 
 [To top]
 
 ## Install basic tools
 
-```sh
-apt update
-apt install -y vim htop bash-completion tmux
+See [Basic tools (Linux)](../linux/basic-tools.md)
 
-# create default tmux configuration
-mkdir -p /etc/tmux
-echo '
-  set-option -g prefix C-Space
-  set-option -g allow-rename off
-  set -g history-limit 100000
-  set -g renumber-windows on
-  set -g base-index 1
-  set -g display-panes-time 3000
-  setw -g pane-base-index 1
-  setw -g aggressive-resize on
-' | grep -v '^\s*$' | sed 's/^\s\+//' > /etc/tmux/default.conf
-echo 'source-file /etc/tmux/default.conf' >> ~/.tmux.conf
+[To top]
+
+## Install goodies
+
+See [Goodies (Linux)](../linux/goodies.md)
+
+[To top]
+
+## Upgrade
+
+```sh
+~/ls-tools/bin/ls.pve.upgrade.sh
 ```
 
 [To top]
 
-## Install PVE helpers
+---
+
+## Fix Minisforum USB issue
+
+Fix AMD-based Minisforum machine USB issue ([issue reference](https://bbs.minisforum.com/threads/the-iommu-issue-boot-and-usb-problems.2180/))
 
 ```sh
-wget https://github.com/varlogerr/proxmox-tools/raw/master/proxmox/pve-tool-helper-install.sh
-chmod +x ./pve-tool-helper-install.sh
-./pve-tool-helper-install.sh
-rm ./pve-tool-helper-install.sh
+# Fix minisforum USB issue (if required)
+~/ls-tools/bin/ls.pve.fix-minisforum-usb-issue.sh
+```
 
-# generate, edit and execute post-install
-pve-tool-post-install.sh --conf-gen ~/conf/pve-tool/pve.post-install.conf
-vim ~/conf/pve-tool/pve.post-install.conf
-pve-tool-post-install.sh ~/conf/pve-tool/pve.post-install.conf
+[To top]
+
+## Certificates
+
+Place to `/etc/pve/nodes/pve1/pveproxy-ssl.{key,pem}` and
+```sh
+systemctl restart pveproxy
 ```
 
 [To top]

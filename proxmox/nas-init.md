@@ -18,22 +18,7 @@
 > It's highly important to check directories structure on the hard drives before applying the section.  
 
 ```sh
-DATA_DRIVE_UUID=593427d9-71a9-4b62-8fe1-c840087bf757
-DATA_DRIVE_MP=/mnt/data1
-BAK_DRIVE_UUID=1a64ebc9-17dc-4af2-9d92-9dafe3e42bcc
-BAK_DRIVE_MP=/mnt/bak1
-
-MOUNT_OPTS=noatime,nosuid,nodev,nofail,x-systemd.device-timeout=3s
-echo "
-  # data drive
-  UUID=${DATA_DRIVE_UUID} ${DATA_DRIVE_MP} ext4 ${MOUNT_OPTS} 0 0
-  # backup drive
-  UUID=${BAK_DRIVE_UUID} ${BAK_DRIVE_MP} ext4 ${MOUNT_OPTS} 0 0
-" | grep -v '^\s*$' | sed 's/^\s\+//' >> /etc/fstab
-
-# create directories to mount to and mount
-mkdir -p "${DATA_DRIVE_MP}" "${BAK_DRIVE_MP}"
-mount -a
+~/ls-tools/bin/ls.pve.nas-mount-storages.sh
 ```
 
 [To top]
@@ -63,14 +48,9 @@ mount -a
 
 * Don't start the machines yet!
 * ```sh
-  # ensure directories to mount to container
+  # Ensure directories to mount to container
   # and ownership, UID and GID are likely 1000
-  mkdir -p \
-    /root/servants/conf/servant{1,2} \
-    /root/servants/data/servant{1,2}/{ovpn,wg}
-  chown -R 1000:1000 \
-    /root/servants/conf/servant{1,2} \
-    /root/servants/data/servant{1,2}/{ovpn,wg}
+  ~/ls-tools/bin/ls.pve.nas-create-servants-dirs.sh
   ```
 * The hookscripts perform the following:
   * ensure the user
@@ -90,7 +70,7 @@ mount -a
   ```sh
   # Create passwords for users.
   # Hooks first check file `<MACHINE_ID>.pass` and if not found or empty tries `master.pass`.
-  # If password file is not read for somw reason, passwordless user will be created.
+  # If password file is not read for some reason, passwordless user will be created.
   PASS=<PASS_PLACEHOLDER> # or `read -s PASS` if somebody is begind you shoulder
   mkdir -p /root/.toolset-conf/pve/secrets/homelab/pass
   find /root/.toolset-conf/pve/secrets -type d -exec chmod 0700 {} \;
@@ -99,16 +79,11 @@ mount -a
   ```
 
   ```sh
-  # install hooks
-  branch=master
-  tmpdir="$(mktemp -d)"
-  wget -qO- https://github.com/varlogerr/linux-snippets/archive/refs/heads/${branch}.tar.gz | tar -xzf - -C "${tmpdir}"
-  cp -r "${tmpdir}/linux-snippets-${branch}/proxmox/rootfs/root/.toolset" /root
-  rm -rf "${tmpdir}"
-  mkdir -p /var/lib/vz/snippets
-  ln -fs /root/.toolset/pve/hook/nas1.sh /var/lib/vz/snippets/nas.sh
-  ln -fs /root/.toolset/pve/hook/servants.sh /var/lib/vz/snippets/servants.sh
-  # attach hooks
+  # Install hooks from master branch.
+  # Optionally pass branch name as an argument
+  # to use an alternative branch.
+  ~/ls-tools/bin/ls.pve.nas-install-hooks.sh
+  # Attach hooks to containers.
   pct set 110 --hookscript local:snippets/nas.sh
   pct set 111 --hookscript local:snippets/servants.sh
   pct set 112 --hookscript local:snippets/servants.sh
@@ -118,6 +93,7 @@ mount -a
   > Although `apparmor` is disabled by hookscript, for some reason it's not applied from the first run. So one start-stop loop is required before running the playbook.  
   > Don't forget to change `MACHINE_ID_PLACEHOLDER` placeholder!
   ```sh
+  # Loop over each machine
   MACHINE_ID=<MACHINE_ID_PLACEHOLDER>
   pct start ${MACHINE_ID}
   lxc-attach ${MACHINE_ID} -- passwd bug1 # if not set with hookscript
@@ -140,13 +116,13 @@ mount -a
 
 ### <a id="devnotes-lxc-devmode"></a> LXC Devmode
 
-Development / testing in LXC containers doesn't require some features (for example mounts). To make hook aware of the machine devmode create an empty file `/root/.toolset-conf/pve/devmode/<MACHINE_ID>`. Example:
+Development / testing in LXC containers doesn't always require mounts. To make hook aware of the machine devmode create an empty file `/root/.toolset-conf/pve/devmode/<MACHINE_ID>`. Example:
 ```sh
 # Enable devmode for container #103
 touch /root/.toolset-conf/pve/devmode/103
 ```
 
-Remove the file to disable devmode
+Remove the file to disable devmode.
 
 [To top]
 
