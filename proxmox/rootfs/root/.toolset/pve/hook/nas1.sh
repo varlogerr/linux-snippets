@@ -12,8 +12,8 @@ PHASE="${2}"
 PVE_HOME=/root/.toolset/pve
 
 . "${PVE_HOME}/lib/shlib.sh" 2>/dev/null || { echo "Can't source ${PVE_HOME}/lib/shlib.sh" >&2; exit 1; }
-. "${PVE_HOME}/lib/pve.sh" 2>/dev/null || trap_fatal --decore $? "Can't source ${PVE_HOME}/lib/pve.sh"
-. "${PVE_HOME}/lib/lxc.sh" 2>/dev/null || trap_fatal --decore $? "Can't source ${PVE_HOME}/lib/lxc.sh"
+. "${PVE_HOME}/lib/pve.sh" 2>/dev/null || trap_fatal $? "Can't source ${PVE_HOME}/lib/pve.sh"
+. "${PVE_HOME}/lib/lxc.sh" 2>/dev/null || trap_fatal $? "Can't source ${PVE_HOME}/lib/lxc.sh"
 
 # detect devmode
 DEVMODE=false
