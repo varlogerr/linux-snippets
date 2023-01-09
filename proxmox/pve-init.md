@@ -2,6 +2,7 @@
 
 * [Back](readme.md)
 ---
+* [Cergiticates](#certificates)
 * [Fix locale](#fix-locale)
 * [Install basic tools](#install-basic-tools)
 * [Install more goodies](#install-basic-tools)
