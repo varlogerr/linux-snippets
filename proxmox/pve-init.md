@@ -4,8 +4,7 @@
 ---
 * [Fix locale](#fix-locale)
 * [Post-install](#post-install)
-* [Install basic tools](#install-basic-tools)
-* [Install goodies](#install-basic-tools)
+* [Install tools (optional)](#install-tools)
 * [Upgrade](#upgrade)
 ---
 * [Fix Minisforum USB issue](#post-install)
@@ -39,15 +38,11 @@ Logout and login back.
 
 [To top]
 
-## Install basic tools
+## <a id="install-tools"></a> Install tools (optional)
 
-See [Basic tools (Linux)](../linux/basic-tools.md)
-
-[To top]
-
-## Install goodies
-
-See [Goodies (Linux)](../linux/goodies.md)
+See:
+* [Basic tools (Linux)](../linux/basic-tools.md) 
+* [Goodies (Linux)](../linux/goodies.md)
 
 [To top]
 

@@ -6,6 +6,7 @@
 * [fzf](#fzf)
 ---
 
+## tmux
 
 ```sh
 ~/ls-tools/bin/ls.linux.install-tmux.sh
@@ -19,8 +20,6 @@
 ~/ls-tools/bin/ls.linux.install-fzf.sh
 . ~/.bashrc
 ```
-
-Log out and log in again.
 
 [To top]
 
