@@ -15,13 +15,8 @@
 
 ## Fix locale
 
-[Reference article](https://serverfault.com/a/446048)
-
 ```sh
-# View missing locale vars
-locale
-# Update missing variables
-update-locale LANGUAGE=en_US.UTF-8 LC_ALL=en_US.UTF-8
+~/ls-tools/bin/ls.pve.fix-locale.sh
 ```
 
 Logout and login back.
