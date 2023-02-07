@@ -15,9 +15,9 @@ __bootstrap_iife() {
 
 print_on_change_info() {
   log_info ''
-  log_info '~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
-  log_info 'Re-login back is recommended'
-  log_info '~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
+  log_info '~~~~~~~~~~~~~~~~~~~~~~~'
+  log_info 'Re-login is recommended'
+  log_info '~~~~~~~~~~~~~~~~~~~~~~~'
   log_info ''
 }
 

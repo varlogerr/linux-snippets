@@ -2,9 +2,14 @@
 
 # SETTINGS START
   declare -a TOOLS=(
-    vim
-    htop
     bash-completion
+    curl
+    htop
+    nano
+    tar
+    tree
+    vim
+    wget
   )
 # SETTINGS END
 
