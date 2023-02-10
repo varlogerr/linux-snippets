@@ -7,8 +7,12 @@ __bootstrap_iife() {
   local curdir="$(dirname -- "$(realpath -- "${BASH_SOURCE[0]}")")"
   local libdir="$(realpath -- "${curdir}/../lib")"
 
+  . "${libdir}/pve.sh"
   . "${libdir}/shlib.sh"
   . "${libdir}/sys.sh"
+
+  declare -a supported_pve=(7)
+  pve_version_must_in "${supported_pve[@]}"
 
   sys_must_root
 }; __bootstrap_iife; unset __bootstrap_iife

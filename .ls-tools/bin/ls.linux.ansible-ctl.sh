@@ -17,9 +17,11 @@ __bootstrap_iife() {
   local curdir="$(dirname -- "$(realpath -- "${BASH_SOURCE[0]}")")"
   local libdir="$(realpath -- "${curdir}/../lib")"
 
+  . "${libdir}/common.sh"
   . "${libdir}/shlib.sh"
   . "${libdir}/sys.sh"
 
+  sys_dist_must_id_or_like_in debian ubuntu
   sys_must_root
 }; __bootstrap_iife; unset __bootstrap_iife
 
@@ -29,24 +31,22 @@ declare -A DEB_CODENAME_MAP=(
 )
 
 get_ubu_codename() {
-  local dist_info="$(cat /etc/os-release)"
-  local dist_id; dist_id="$(grep '^ID=.*' <<< "${dist_info}" | cut -d= -f2)"
-  local dist_id_like; dist_id_like="$(grep '^ID_LIKE=.*' <<< "${dist_info}" | cut -d= -f2)"
+  local os_release_file=/etc/os-release
   local mapped_codename
 
-  if [[ "${dist_id}" == debian ]]; then
+  if [[ "$(sys_dist_id)" == debian ]]; then
     local dist_codename
-    dist_codename="$(grep '^VERSION_CODENAME=.*' <<< "${dist_info}" | cut -d= -f2)"
+    dist_codename="$(grep '^VERSION_CODENAME=.*' "${os_release_file}" | cut -d= -f2)"
     mapped_codename="${DEB_CODENAME_MAP[${dist_codename}]}"
-  elif [[ "${dist_id}" == ubuntu ]]; then
-    mapped_codename="$(grep '^VERSION_CODENAME=.*' <<< "${dist_info}" | cut -d= -f2)"
-  elif [[ "${dist_id_like}" == ubuntu ]]; then
-    mapped_codename="$(grep '^UBUNTU_CODENAME=.*' <<< "${dist_info}" | cut -d= -f2)"
+  elif [[ "$(sys_dist_id)" == ubuntu ]]; then
+    mapped_codename="$(grep '^VERSION_CODENAME=.*' "${os_release_file}" | cut -d= -f2)"
+  elif [[ "$(sys_dist_id_like)" == ubuntu ]]; then
+    mapped_codename="$(grep '^UBUNTU_CODENAME=.*' "${os_release_file}" | cut -d= -f2)"
   else
-    trap_fatal 1 "Can't detect ubuntu codename"
+    trap_fatal 1 "Can't map ubuntu codename"
   fi
 
-  echo "${mapped_codename}"
+  printf -- '%s\n' "${mapped_codename}"
 }
 
 configure_repo() {
@@ -61,14 +61,20 @@ configure_repo() {
   local repo_file=/etc/apt/sources.list.d/ansible.list
 
   (
-    set -o pipefail
     set -x
     apt-get update
     apt-get install -y software-properties-common
     mkdir -p -- "${gpg_key_dir}"
-    curl -sSL "${gpg_key_url}" | gpg --dearmor | tee "${gpg_key_file}" >/dev/null
-    cat <(echo "${repo_file_content}") | tee "${repo_file}" >/dev/null
-    apt-get update
+  )
+
+  (
+    set -o pipefail
+    common_dl_file_to_stdout "${gpg_key_url}" | (
+      set -x
+      gpg --dearmor | tee "${gpg_key_file}" >/dev/null
+      cat <(set +x; echo "${repo_file_content}") | tee "${repo_file}" >/dev/null
+      apt-get update
+    )
   )
 }
 

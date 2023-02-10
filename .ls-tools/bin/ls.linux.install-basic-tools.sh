@@ -20,6 +20,7 @@ __bootstrap_iife() {
   . "${libdir}/shlib.sh"
   . "${libdir}/sys.sh"
 
+  sys_dist_must_id_or_like_in debian ubuntu
   sys_must_root
 }; __bootstrap_iife; unset __bootstrap_iife
 
