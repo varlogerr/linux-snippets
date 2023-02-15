@@ -11,7 +11,7 @@
 
 ### <a id="pre-setup-helper-scripts"></a> Helper scripts
 
-In most cases you'll need helper scripts. Installation:
+In most setup scenarios helper scripts are required. Installation:
 
 ```sh
 (branch=master; bash <(
