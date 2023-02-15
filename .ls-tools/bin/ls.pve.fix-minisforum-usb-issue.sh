@@ -1,12 +1,15 @@
 #!/usr/bin/env bash
 
-__bootstrap_iife() {
-  local curdir="$(dirname -- "$(realpath -- "${BASH_SOURCE[0]}")")"
-  local libdir="$(realpath -- "${curdir}/../lib")"
+# When some USB ports don't work with enabled IOMMU
+# in BIOS. The solution is based on point 3 from:
+# https://bbs.minisforum.com/threads/the-iommu-issue-boot-and-usb-problems.2180/
+# Applied fix requires reboot
 
-  . "${libdir}/pve.sh"
-  . "${libdir}/shlib.sh"
-  . "${libdir}/sys.sh"
+__bootstrap_iife() {
+  local curdir; curdir="$(dirname -- "$(realpath -- "${BASH_SOURCE[0]}")")"
+  local libdir; libdir="$(realpath -- "${curdir}/../lib")"
+
+  local f; for f in "${libdir}"/*.sh; do . "${f}"; done
 
   declare -a supported_pve=(7)
   pve_version_must_in "${supported_pve[@]}"
@@ -16,10 +19,6 @@ __bootstrap_iife() {
 
 REBOOT_RECOMMENDED=false
 
-# When some USB ports don't work with enabled IOMMU
-# in BIOS. The solution is based on point 3 from:
-# https://bbs.minisforum.com/threads/the-iommu-issue-boot-and-usb-problems.2180/
-# Applied fix requires reboot
 fix_grub_usb_issue() {
   local grub_path=/etc/default/grub
   local entry_name=GRUB_CMDLINE_LINUX_DEFAULT

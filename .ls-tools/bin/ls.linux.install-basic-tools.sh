@@ -14,11 +14,10 @@
 # SETTINGS END
 
 __bootstrap_iife() {
-  local curdir="$(dirname -- "$(realpath -- "${BASH_SOURCE[0]}")")"
-  local libdir="$(realpath -- "${curdir}/../lib")"
+  local curdir; curdir="$(dirname -- "$(realpath -- "${BASH_SOURCE[0]}")")"
+  local libdir; libdir="$(realpath -- "${curdir}/../lib")"
 
-  . "${libdir}/shlib.sh"
-  . "${libdir}/sys.sh"
+  local f; for f in "${libdir}"/*.sh; do . "${f}"; done
 
   sys_dist_must_id_or_like_in debian ubuntu
   sys_must_root

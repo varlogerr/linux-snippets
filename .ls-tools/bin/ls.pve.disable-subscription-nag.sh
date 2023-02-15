@@ -1,15 +1,13 @@
 #!/usr/bin/env bash
 
 __bootstrap_iife() {
-  local curdir="$(dirname -- "$(realpath -- "${BASH_SOURCE[0]}")")"
-  local libdir="$(realpath -- "${curdir}/../lib")"
+  local curdir; curdir="$(dirname -- "$(realpath -- "${BASH_SOURCE[0]}")")"
+  local libdir; libdir="$(realpath -- "${curdir}/../lib")"
+
+  local f; for f in "${libdir}"/*.sh; do . "${f}"; done
 
   # must be exposed
   TPLDIR="$(realpath -- "${curdir}/../tpl")"
-
-  . "${libdir}/pve.sh"
-  . "${libdir}/shlib.sh"
-  . "${libdir}/sys.sh"
 
   declare -a supported_pve=(7)
   pve_version_must_in "${supported_pve[@]}"
