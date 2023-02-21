@@ -54,12 +54,19 @@ install_hooks() {
     trap_fatal 1 "Can't create snippets directory"
   }
 
-  local dest_filename
-  local src; for src in "${!src_dest_map[@]}"; do
-    dest_filename="${src_dest_map[${src}]}"
+  local src_path
+  local dest_path
+  local src_filename; for src_filename in "${!src_dest_map[@]}"; do
+    src_path="/root/.toolset/pve/hook/${src_filename}"
+    dest_path="${dest_dirpath}/${src_dest_map[${src_filename}]}"
 
-    (set -x; ln -fs "/root/.toolset/pve/hook/${src}" "${dest_dirpath}/${dest_filename}" &>/dev/null) || {
-      trap_fatal 1 "Can't create nas snippet"
+    (set -x; chmod 0755 "${src_path}" &>/dev/null) || {
+      log_warn "Can't chmod nas snippet"
+      continue
+    }
+
+    (set -x; ln -fs "${src_path}" "${dest_path}" &>/dev/null) || {
+      log_warn "Can't symlink nas snippet"
     }
   done
 }
