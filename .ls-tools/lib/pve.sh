@@ -1,3 +1,13 @@
+#
+# CONSTANTS
+#
+
+declare -ra PVE_SUPPORTED_VERSIONS=(7)
+
+#
+# FUNCTIONS
+#
+
 # Usage:
 #   pve_version_in 6 7 [...]
 #   # RC:

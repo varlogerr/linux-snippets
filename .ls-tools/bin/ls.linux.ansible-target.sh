@@ -13,7 +13,7 @@ __bootstrap_iife() {
 
   local f; for f in "${libdir}"/*.sh; do . "${f}"; done
 
-  sys_dist_must_id_or_like_in debian ubuntu
+  sys_dist_must_id_or_like_in "${SYS_SUPPORTED_PLATFORMS[@]}"
   sys_must_root
 }; __bootstrap_iife; unset __bootstrap_iife
 

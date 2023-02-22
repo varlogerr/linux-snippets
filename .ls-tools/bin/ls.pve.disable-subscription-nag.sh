@@ -9,9 +9,7 @@ __bootstrap_iife() {
   # must be exposed
   TPLDIR="$(realpath -- "${curdir}/../tpl")"
 
-  declare -a supported_pve=(7)
-  pve_version_must_in "${supported_pve[@]}"
-
+  pve_version_must_in "${PVE_SUPPORTED_VERSIONS[@]}"
   sys_must_root
 }; __bootstrap_iife; unset __bootstrap_iife
 

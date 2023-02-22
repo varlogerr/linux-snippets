@@ -15,7 +15,7 @@ __bootstrap_iife() {
   # must be exposed
   TPLDIR="$(realpath -- "${curdir}/../tpl")"
 
-  sys_dist_must_id_or_like_in debian ubuntu
+  sys_dist_must_id_or_like_in "${SYS_SUPPORTED_PLATFORMS[@]}"
   sys_must_root
 }; __bootstrap_iife; unset __bootstrap_iife
 

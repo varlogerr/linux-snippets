@@ -1,3 +1,13 @@
+#
+# CONSTANTS
+#
+
+declare -ra SYS_SUPPORTED_ID_OR_LIKE=(debian ubuntu)
+
+#
+# FUNCTIONS
+#
+
 sys_is_root() { test $(id -u) -eq 0; }
 
 sys_must_root() {
