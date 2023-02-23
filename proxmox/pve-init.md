@@ -36,8 +36,10 @@ Logout and login back.
 ## <a id="install-tools"></a> Install tools (optional)
 
 See:
-* [Basic tools (Linux)](../linux/basic-tools.md) 
-* [Goodies (Linux)](../linux/goodies.md)
+* [Basic tools (Linux)](../linux/basic-tools.md)
+* Goodies (Linux):
+  * [fzf](../linux/goodies.md#fzf)
+  * [tmux](../linux/goodies.md#tmux)
 
 [To top]
 
