@@ -1,21 +1,21 @@
 #!/usr/bin/env bash
 
-# SETTINGS START
-  DATA_DRIVE_UUID=593427d9-71a9-4b62-8fe1-c840087bf757
-  DATA_DRIVE_MP=/mnt/data1
-  BAK_DRIVE_UUID=1a64ebc9-17dc-4af2-9d92-9dafe3e42bcc
-  BAK_DRIVE_MP=/mnt/bak1
+{ # SETTINGS
+  declare -r DATA_DRIVE_UUID=593427d9-71a9-4b62-8fe1-c840087bf757
+  declare -r DATA_DRIVE_MP=/mnt/data1
+  declare -r BAK_DRIVE_UUID=1a64ebc9-17dc-4af2-9d92-9dafe3e42bcc
+  declare -r BAK_DRIVE_MP=/mnt/bak1
 
-  MOUNT_OPTS=noatime,nosuid,nodev,nofail,x-systemd.device-timeout=3s
-  declare -A MP_MAP=(
+  declare -r MOUNT_OPTS=noatime,nosuid,nodev,nofail,x-systemd.device-timeout=3s
+  declare -Ar MP_MAP=(
     ["${DATA_DRIVE_UUID}"]="${DATA_DRIVE_MP}"
     ["${BAK_DRIVE_UUID}"]="${BAK_DRIVE_MP}"
   )
-  declare -A SEARCH_REX_MAP=(
+  declare -Ar SEARCH_REX_MAP=(
     ["${DATA_DRIVE_UUID}"]="^UUID=${DATA_DRIVE_UUID}\\s\\+${MP_MAP[${DATA_DRIVE_UUID}]} "
     ["${BAK_DRIVE_UUID}"]="^UUID=${BAK_DRIVE_UUID}\\s\\+${MP_MAP[${BAK_DRIVE_UUID}]} "
   )
-  declare -A ENTRIES_MAP=(
+  declare -Ar ENTRIES_MAP=(
     ["${DATA_DRIVE_UUID}"]="
       # data drive
       UUID=${DATA_DRIVE_UUID} ${MP_MAP[${DATA_DRIVE_UUID}]} ext4 ${MOUNT_OPTS} 0 0
@@ -25,17 +25,18 @@
       UUID=${BAK_DRIVE_UUID} ${MP_MAP[${BAK_DRIVE_UUID}]} ext4 ${MOUNT_OPTS} 0 0
     "
   )
-# SETTINGS END
+}
 
-__bootstrap_iife() {
-  local curdir; curdir="$(dirname -- "$(realpath -- "${BASH_SOURCE[0]}")")"
-  local libdir; libdir="$(realpath -- "${curdir}/../lib")"
+{ # BOOTSTRAP
+  CURDIR="$(dirname -- "$(realpath -- "${BASH_SOURCE[0]}")")"
+  LIBDIR="$(realpath -- "${CURDIR}/../lib")"
+  declare -r CURDIR LIBDIR
 
-  local f; for f in "${libdir}"/*.sh; do . "${f}"; done
+  for f in "${LIBDIR}"/*.sh; do . "${f}"; done
 
   pve_version_must_in "${PVE_SUPPORTED_VERSIONS[@]}"
   sys_must_root
-}; __bootstrap_iife; unset __bootstrap_iife
+}
 
 mount_storages() {
   local dest_file=/etc/fstab

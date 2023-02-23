@@ -1,21 +1,22 @@
 #!/usr/bin/env bash
 
-# SETTINGS START
-  declare -a TOOLS=(
+{ # SETTINGS
+  declare -ar TOOLS=(
     openssh-server
     python3
   )
-# SETTINGS END
+}
 
-__bootstrap_iife() {
-  local curdir; curdir="$(dirname -- "$(realpath -- "${BASH_SOURCE[0]}")")"
-  local libdir; libdir="$(realpath -- "${curdir}/../lib")"
+{ # BOOTSTRAP
+  CURDIR="$(dirname -- "$(realpath -- "${BASH_SOURCE[0]}")")"
+  LIBDIR="$(realpath -- "${CURDIR}/../lib")"
+  declare -r CURDIR LIBDIR
 
-  local f; for f in "${libdir}"/*.sh; do . "${f}"; done
+  for f in "${LIBDIR}"/*.sh; do . "${f}"; done
 
-  sys_dist_must_id_or_like_in "${SYS_SUPPORTED_PLATFORMS[@]}"
+  sys_dist_must_id_or_like_in "${SYS_SUPPORTED_ID_OR_LIKE[@]}"
   sys_must_root
-}; __bootstrap_iife; unset __bootstrap_iife
+}
 
 ansible_target_install() {
   (set -x; apt-get update; apt-get install -y "${TOOLS[@]}")

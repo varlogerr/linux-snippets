@@ -1,17 +1,16 @@
 #!/usr/bin/env bash
 
-__bootstrap_iife() {
-  local curdir; curdir="$(dirname -- "$(realpath -- "${BASH_SOURCE[0]}")")"
-  local libdir; libdir="$(realpath -- "${curdir}/../lib")"
+{ # BOOTSTRAP
+  CURDIR="$(dirname -- "$(realpath -- "${BASH_SOURCE[0]}")")"
+  LIBDIR="$(realpath -- "${CURDIR}/../lib")"
+  TPLDIR="$(realpath -- "${CURDIR}/../tpl")"
+  declare -r CURDIR LIBDIR TPLDIR
 
-  local f; for f in "${libdir}"/*.sh; do . "${f}"; done
-
-  # must be exposed
-  TPLDIR="$(realpath -- "${curdir}/../tpl")"
+  for f in "${LIBDIR}"/*.sh; do . "${f}"; done
 
   pve_version_must_in "${PVE_SUPPORTED_VERSIONS[@]}"
   sys_must_root
-}; __bootstrap_iife; unset __bootstrap_iife
+}
 
 disable_subscription_nag() {
   local dest=/etc/apt/apt.conf.d/no-nag-script

@@ -1,14 +1,15 @@
 #!/usr/bin/env bash
 
-__bootstrap_iife() {
-  local curdir; curdir="$(dirname -- "$(realpath -- "${BASH_SOURCE[0]}")")"
-  local libdir; libdir="$(realpath -- "${curdir}/../lib")"
+{ # BOOTSTRAP
+  CURDIR="$(dirname -- "$(realpath -- "${BASH_SOURCE[0]}")")"
+  LIBDIR="$(realpath -- "${CURDIR}/../lib")"
+  declare -r CURDIR LIBDIR
 
-  local f; for f in "${libdir}"/*.sh; do . "${f}"; done
+  for f in "${LIBDIR}"/*.sh; do . "${f}"; done
 
   pve_version_must_in "${PVE_SUPPORTED_VERSIONS[@]}"
   sys_must_root
-}; __bootstrap_iife; unset __bootstrap_iife
+}
 
 pve_enable_nosubscription_repo() {
   local dest_file=/etc/apt/sources.list.d/pve-no-subscription.list

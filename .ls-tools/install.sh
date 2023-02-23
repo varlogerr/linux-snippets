@@ -1,11 +1,13 @@
 #!/usr/bin/env bash
 
-BRANCH=${1:-master}
-DL_URL=https://github.com/varlogerr/linux-snippets/archive/refs/heads/${BRANCH}.tar.gz
+declare -r BRANCH=${1:-master}
+declare -r DL_URL=https://github.com/varlogerr/linux-snippets/archive/refs/heads/${BRANCH}.tar.gz
 
 SCRIPT_PATH="$(realpath -- "${BASH_SOURCE[0]}" 2>/dev/null)"
 DEST_DIR="${HOME}/ls-tools"
 [[ -f "${SCRIPT_PATH}" ]] && DEST_DIR="$(dirname -- "${SCRIPT_PATH}")"
+
+declare -r SCRIPT_PATH DEST_DIR
 
 log_framed() {
   local frame_char="${1}"
@@ -58,8 +60,17 @@ TMP_DIR="$(set -x; mktemp -d --suffix .ls 2>/dev/null)" || {
   fail_with_msg 'Error installing LS tools to destination directory'
 }
 
-TMP_PARENT="$(dirname -- "${TMP_DIR}")"
-TMP_BASE="$(basename -- "${TMP_DIR}")"
+(set -x; chmod 0755 -- "${DEST_DIR}/install.sh" "${DEST_DIR}/bin/"*.sh 2>/dev/null) || {
+  fail_with_msg 'Error chmod bins'
+}
+
+TMP_PARENT="$(dirname -- "${TMP_DIR}" 2>/dev/null)" || {
+  fail_with_msg 'Error detecting TMP_PARENT'
+}
+TMP_BASE="$(basename -- "${TMP_DIR}")" || {
+  fail_with_msg 'Error detecting TMP_BASE'
+}
+declare -r TMP_PARENT TMP_BASE
 
 (set -x; cd "${TMP_PARENT}" && rm -rf "${TMP_BASE}")
 

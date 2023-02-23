@@ -2,6 +2,8 @@
 
 * [Back](readme.md)
 ---
+* [Install helper scripts](#install-helper-scripts)
+---
 * [Mount hard drives](#mount-hard-drives)
 * [Setup containers](#setup-containers)
   * [Init1](#setup-containers-init1)
@@ -9,6 +11,14 @@
   * [Init3](#setup-containers-init3)
 * [Devnotes](#devnotes)
   * [LXC Devmode](#devnotes-lxc-devmode)
+---
+
+## Install helper scripts
+
+See [Install helper scripts](../readme.md#pre-setup-install-helper-scripts)
+
+[To top]
+
 ---
 
 ## Mount hard drives
@@ -71,22 +81,23 @@
   # Create passwords for users.
   # Hooks first check file `<MACHINE_ID>.pass` and if not found or empty tries `master.pass`.
   # If password file is not read for some reason, passwordless user will be created.
-  PASS=<PASS_PLACEHOLDER> # or `read -s PASS` if somebody is begind you shoulder
-  mkdir -p /root/.toolset-conf/pve/secrets/homelab/pass
-  find /root/.toolset-conf/pve/secrets -type d -exec chmod 0700 {} \;
-  openssl passwd -5 "${PASS}" > /root/.toolset-conf/pve/secrets/homelab/pass/master.pass
-  chmod 0600 /root/.toolset-conf/pve/secrets/homelab/pass/master.pass
+  PASS=<PASS_PLACEHOLDER> # or `read -s PASS` if somebody is behind you shoulder
+  mkdir -p /root/.ls-tools-conf/pve/secrets/homelab/pass
+  find /root/.ls-tools-conf/pve/secrets -type d -exec chmod 0700 {} \;
+  openssl passwd -5 "${PASS}" > /root/.ls-tools-conf/pve/secrets/homelab/pass/master.pass
+  chmod 0600 /root/.ls-tools-conf/pve/secrets/homelab/pass/master.pass
   ```
 
   ```sh
-  # Install hooks from master branch.
-  # Optionally pass branch name as an argument
-  # to use an alternative branch.
+  # Install hooks
   ~/ls-tools/bin/ls.pve.nas-install-hooks.sh
+  ```
+
+  ```sh
   # Attach hooks to containers.
-  pct set 110 --hookscript local:snippets/nas.sh
-  pct set 111 --hookscript local:snippets/servants.sh
-  pct set 112 --hookscript local:snippets/servants.sh
+  pct set 110 --hookscript local:snippets/nas1.sh
+  pct set 111 --hookscript local:snippets/nas1-servant1.sh
+  pct set 112 --hookscript local:snippets/nas1-servant2.sh
   ```
 * > **NOTE**:
   >
@@ -116,10 +127,10 @@
 
 ### <a id="devnotes-lxc-devmode"></a> LXC Devmode
 
-Development / testing in LXC containers doesn't always require mounts. To make hook aware of the machine devmode create an empty file `/root/.toolset-conf/pve/devmode/<MACHINE_ID>`. Example:
+Development / testing in LXC containers doesn't always require mounts. To make hook aware of the machine devmode create an empty file `/root/.ls-tools-conf/pve/devmode/<MACHINE_ID>`. Example:
 ```sh
 # Enable devmode for container #103
-touch /root/.toolset-conf/pve/devmode/103
+touch /root/.ls-tools-conf/pve/devmode/103
 ```
 
 Remove the file to disable devmode.

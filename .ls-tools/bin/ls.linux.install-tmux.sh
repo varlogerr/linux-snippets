@@ -1,23 +1,24 @@
 #!/usr/bin/env bash
 
-# SETTINGS START
-  declare -a TOOLS=(tmux)
-  TMUX_DEFAULT_CONFFILE=/etc/tmux/default.conf
-  TMUX_USER_CONFFILE="${HOME}/.tmux.conf"
-# SETTINGS END
+{ # SETTINGS
+  declare -ar TOOLS=(
+    tmux
+  )
+  declare -ar TMUX_DEFAULT_CONFFILE=/etc/tmux/default.conf
+  declare -ar TMUX_USER_CONFFILE="${HOME}/.tmux.conf"
+}
 
-__bootstrap_iife() {
-  local curdir; curdir="$(dirname -- "$(realpath -- "${BASH_SOURCE[0]}")")"
-  local libdir; libdir="$(realpath -- "${curdir}/../lib")"
+{ # BOOTSTRAP
+  CURDIR="$(dirname -- "$(realpath -- "${BASH_SOURCE[0]}")")"
+  LIBDIR="$(realpath -- "${CURDIR}/../lib")"
+  TPLDIR="$(realpath -- "${CURDIR}/../tpl")"
+  declare -r CURDIR LIBDIR TPLDIR
 
-  local f; for f in "${libdir}"/*.sh; do . "${f}"; done
+  for f in "${LIBDIR}"/*.sh; do . "${f}"; done
 
-  # must be exposed
-  TPLDIR="$(realpath -- "${curdir}/../tpl")"
-
-  sys_dist_must_id_or_like_in "${SYS_SUPPORTED_PLATFORMS[@]}"
+  sys_dist_must_id_or_like_in "${SYS_SUPPORTED_ID_OR_LIKE[@]}"
   sys_must_root
-}; __bootstrap_iife; unset __bootstrap_iife
+}
 
 install_tmux() {
   (set -x; apt-get update; apt-get install -y "${TOOLS[@]}")

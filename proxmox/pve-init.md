@@ -2,15 +2,39 @@
 
 * [Back](readme.md)
 ---
+* [Install helper scripts](#install-helper-scripts)
+---
+* [Fix Minisforum USB issue](#fix-minisforum-usb-issue)
+---
 * [Fix locale](#fix-locale)
 * [Post-install](#post-install)
+* [Upgrade (optional)](#upgrade)
 * [Install tools (optional)](#install-tools)
-* [Upgrade](#upgrade)
 ---
-* [Fix Minisforum USB issue](#post-install)
 * [Cergiticates](#certificates)
 * [Join host logical volumes](#join-host-logical-volumes)
 * [Configure storages](#configure-storages)
+---
+
+## Install helper scripts
+
+See [Install helper scripts](../readme.md#pre-setup-install-helper-scripts)
+
+[To top]
+
+---
+
+## Fix Minisforum USB issue
+
+Fix AMD-based Minisforum machine USB issue ([issue reference](https://bbs.minisforum.com/threads/the-iommu-issue-boot-and-usb-problems.2180/))
+
+```sh
+# Fix minisforum USB issue (if required)
+~/ls-tools/bin/ls.pve.fix-minisforum-usb-issue.sh
+```
+
+[To top]
+
 ---
 
 ## Fix locale
@@ -33,36 +57,25 @@ Logout and login back.
 
 [To top]
 
-## <a id="install-tools"></a> Install tools (optional)
+## <a id="upgrade"></a> Upgrade
 
-See:
-* [Basic tools (Linux)](../linux/basic-tools.md)
-* Goodies (Linux):
-  * [fzf](../linux/goodies.md#fzf)
-  * [tmux](../linux/goodies.md#tmux)
+```sh
+~/ls-tools/bin/ls.linux.upgrade.sh
+```
 
 [To top]
 
-## Upgrade
+## <a id="install-tools"></a> Install tools (optional)
 
-```sh
-~/ls-tools/bin/ls.pve.upgrade.sh
-```
+See:
+* [Basic tools (Linux)](../linux/tools.md#install-basic-tools)
+* Goodies (Linux):
+  * [fzf](../linux/tools.md#install-goodies-fzf)
+  * [tmux](../linux/tools.md#install-goodies-tmux)
 
 [To top]
 
 ---
-
-## Fix Minisforum USB issue
-
-Fix AMD-based Minisforum machine USB issue ([issue reference](https://bbs.minisforum.com/threads/the-iommu-issue-boot-and-usb-problems.2180/))
-
-```sh
-# Fix minisforum USB issue (if required)
-~/ls-tools/bin/ls.pve.fix-minisforum-usb-issue.sh
-```
-
-[To top]
 
 ## Certificates
 

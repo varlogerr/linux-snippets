@@ -1,18 +1,5 @@
 #!/usr/bin/env bash
 
-{ # SETTINGS
-  declare -ar TOOLS=(
-    bash-completion
-    curl
-    htop
-    nano
-    tar
-    tree
-    vim
-    wget
-  )
-}
-
 { # BOOTSTRAP
   CURDIR="$(dirname -- "$(realpath -- "${BASH_SOURCE[0]}")")"
   LIBDIR="$(realpath -- "${CURDIR}/../lib")"
@@ -24,8 +11,17 @@
   sys_must_root
 }
 
-install_basic_tools() {
-  (set -x; apt-get update; apt-get install -y "${TOOLS[@]}")
+pve_upgrade() {
+  (set -x; apt-get update; apt-get dist-upgrade -y)
 }
 
-install_basic_tools
+print_post_info() {
+  log_info ""
+  log_info '~~~~~~~~~~~~~~~~~~'
+  log_info "Reboot recommended"
+  log_info '~~~~~~~~~~~~~~~~~~'
+  log_info ""
+}
+
+pve_upgrade
+print_post_info

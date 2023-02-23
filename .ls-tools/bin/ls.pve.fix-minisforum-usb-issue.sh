@@ -5,15 +5,16 @@
 # https://bbs.minisforum.com/threads/the-iommu-issue-boot-and-usb-problems.2180/
 # Applied fix requires reboot
 
-__bootstrap_iife() {
-  local curdir; curdir="$(dirname -- "$(realpath -- "${BASH_SOURCE[0]}")")"
-  local libdir; libdir="$(realpath -- "${curdir}/../lib")"
+{ # BOOTSTRAP
+  CURDIR="$(dirname -- "$(realpath -- "${BASH_SOURCE[0]}")")"
+  LIBDIR="$(realpath -- "${CURDIR}/../lib")"
+  declare -r CURDIR LIBDIR
 
-  local f; for f in "${libdir}"/*.sh; do . "${f}"; done
+  for f in "${LIBDIR}"/*.sh; do . "${f}"; done
 
   pve_version_must_in "${PVE_SUPPORTED_VERSIONS[@]}"
   sys_must_root
-}; __bootstrap_iife; unset __bootstrap_iife
+}
 
 REBOOT_RECOMMENDED=false
 

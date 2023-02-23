@@ -1,7 +1,7 @@
 # <a id="top"></a> TOC
 
 * [Pre-setup](#pre-setup)
-  * [Helper scripts](#pre-setup-helper-scripts)
+  * [Install helper scripts](#pre-setup-install-helper-scripts)
 ---
 * [Linux](linux/readme.md)
 * [Proxmox](proxmox/readme.md)
@@ -9,7 +9,7 @@
 
 ## Pre-setup
 
-### <a id="pre-setup-helper-scripts"></a> Helper scripts
+### <a id="pre-setup-install-helper-scripts"></a> Install helper scripts
 
 In most setup scenarios helper scripts are required. Installation:
 

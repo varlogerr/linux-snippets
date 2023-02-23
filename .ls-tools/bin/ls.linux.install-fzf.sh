@@ -1,29 +1,28 @@
 #!/usr/bin/env bash
 
-# SETTINGS START
+{ # SETTINGS
   # https://github.com/junegunn/fzf/releases
-  FZF_VERSION="0.36.0"
-  FZF_HOME=/opt/junegunn/fzf
-  FZF_HOME_BIN="${FZF_HOME}/bin"
-  FZF_HOME_SHELL="${FZF_HOME}/shell"
-# SETTINGS END
+  declare -r FZF_VERSION="0.36.0"
+  declare -r FZF_HOME=/opt/junegunn/fzf
+  declare -r FZF_HOME_BIN="${FZF_HOME}/bin"
+  declare -r FZF_HOME_SHELL="${FZF_HOME}/shell"
+}
 
-FZF_PKG_DL_URL="https://github.com/junegunn/fzf/releases/download/${FZF_VERSION}/fzf-${FZF_VERSION}-linux_amd64.tar.gz"
-FZF_SRC_DL_URL="https://github.com/junegunn/fzf/archive/refs/tags/${FZF_VERSION}.tar.gz"
-FZF_BASH_CONFFILE="${FZF_HOME}/source.bash"
+{ # BOOTSTRAP
+  CURDIR="$(dirname -- "$(realpath -- "${BASH_SOURCE[0]}")")"
+  LIBDIR="$(realpath -- "${CURDIR}/../lib")"
+  TPLDIR="$(realpath -- "${CURDIR}/../tpl")"
+  declare -r CURDIR LIBDIR TPLDIR
 
-__bootstrap_iife() {
-  local curdir; curdir="$(dirname -- "$(realpath -- "${BASH_SOURCE[0]}")")"
-  local libdir; libdir="$(realpath -- "${curdir}/../lib")"
+  for f in "${LIBDIR}"/*.sh; do . "${f}"; done
 
-  local f; for f in "${libdir}"/*.sh; do . "${f}"; done
-
-  # must be exposed
-  TPLDIR="$(realpath -- "${curdir}/../tpl")"
-
-  sys_dist_must_id_or_like_in "${SYS_SUPPORTED_PLATFORMS[@]}"
+  sys_dist_must_id_or_like_in "${SYS_SUPPORTED_ID_OR_LIKE[@]}"
   sys_must_root
-}; __bootstrap_iife; unset __bootstrap_iife
+}
+
+declare -r FZF_PKG_DL_URL="https://github.com/junegunn/fzf/releases/download/${FZF_VERSION}/fzf-${FZF_VERSION}-linux_amd64.tar.gz"
+declare -r FZF_SRC_DL_URL="https://github.com/junegunn/fzf/archive/refs/tags/${FZF_VERSION}.tar.gz"
+declare -r FZF_BASH_CONFFILE="${FZF_HOME}/source.bash"
 
 RELOGIN_RECOMMENDED=false
 

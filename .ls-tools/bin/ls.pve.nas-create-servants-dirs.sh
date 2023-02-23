@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-# SETTINGS START
-  declare -a SERVANTS_DIRS=(
+{ # SETTINGS
+  declare -ar SERVANTS_DIRS=(
     /root/servants/conf/servant1
     /root/servants/data/servant1/ovpn
     /root/servants/data/servant1/wg
@@ -10,18 +10,19 @@
     /root/servants/data/servant2/wg
   )
   # ownership, in UID:GID format, likely to be 1000
-  OWNER_UID_GID="1000:1000"
-# SETTINGS END
+  declare -ar OWNER_UID_GID="1000:1000"
+}
 
-__bootstrap_iife() {
-  local curdir; curdir="$(dirname -- "$(realpath -- "${BASH_SOURCE[0]}")")"
-  local libdir; libdir="$(realpath -- "${curdir}/../lib")"
+{ # BOOTSTRAP
+  CURDIR="$(dirname -- "$(realpath -- "${BASH_SOURCE[0]}")")"
+  LIBDIR="$(realpath -- "${CURDIR}/../lib")"
+  declare -r CURDIR LIBDIR
 
-  local f; for f in "${libdir}"/*.sh; do . "${f}"; done
+  for f in "${LIBDIR}"/*.sh; do . "${f}"; done
 
   pve_version_must_in "${PVE_SUPPORTED_VERSIONS[@]}"
   sys_must_root
-}; __bootstrap_iife; unset __bootstrap_iife
+}
 
 create_servants_dirs() {
   (

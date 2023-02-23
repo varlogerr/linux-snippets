@@ -2,6 +2,5 @@
 
 * [Back](../readme.md)
 ---
-* [Basic tools](basic-tools.md)
-* [Goodies](goodies.md)
+* [Tools](tools.md)
 * [Ansible](ansible.md)
