@@ -2,7 +2,7 @@
 
 { # SETTINGS
   # https://github.com/junegunn/fzf/releases
-  declare -r FZF_VERSION="0.36.0"
+  declare -r FZF_VERSION="0.38.0"
   declare -r FZF_HOME=/opt/junegunn/fzf
   declare -r FZF_HOME_BIN="${FZF_HOME}/bin"
   declare -r FZF_HOME_SHELL="${FZF_HOME}/shell"
