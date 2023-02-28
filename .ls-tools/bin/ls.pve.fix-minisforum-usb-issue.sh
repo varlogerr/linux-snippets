@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 
 # When some USB ports don't work with enabled IOMMU
-# in BIOS. The solution is based on point 3 from:
+# in BIOS. Issue discussion:
+# https://bbs.minisforum.com/threads/rear-usb-unstable-not-working.2130/
+# The solution is based on point 3 from:
 # https://bbs.minisforum.com/threads/the-iommu-issue-boot-and-usb-problems.2180/
 # Applied fix requires reboot
 
@@ -17,6 +19,22 @@
 }
 
 REBOOT_RECOMMENDED=false
+
+check_proc() {
+  local match_name='amd ryzen'
+  local model_name; model_name="$(
+    set -o pipefail
+    grep -i '^model name\s*:' /proc/cpuinfo 2>/dev/null | head -n 1 \
+    | cut -d: -f2 | text_trim | tr '[:upper:]' '[:lower:]'
+  )" || {
+    log_err "Can't detect model name"
+    return 1
+  }
+
+  [[ "${model_name} " == "${match_name} "* ]] || {
+    trap_fatal 1 "Not AMD Ryzen model"
+  }
+}
 
 fix_grub_usb_issue() {
   local grub_path=/etc/default/grub
@@ -68,6 +86,12 @@ fix_grub_usb_issue() {
     && (set -x; update-grub &>/dev/null)
 
     REBOOT_RECOMMENDED=true
+  else
+    log_info ""
+    log_info '~~~~~~~~~'
+    log_info "No change"
+    log_info '~~~~~~~~~'
+    log_info ""
   fi
 }
 
@@ -80,6 +104,8 @@ print_post_info() {
   log_info '~~~~~~~~~~~~~~~~~~'
   log_info ""
 }
+
+check_proc
 
 fix_grub_usb_issue
 print_post_info

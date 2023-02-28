@@ -26,7 +26,7 @@ See [Install helper scripts](../readme.md#pre-setup-install-helper-scripts)
 
 ## Fix Minisforum USB issue
 
-Fix AMD-based Minisforum machine USB issue ([issue reference](https://bbs.minisforum.com/threads/the-iommu-issue-boot-and-usb-problems.2180/))
+Fix AMD-based Minisforum machine USB issue. [The issue discussion](https://bbs.minisforum.com/threads/rear-usb-unstable-not-working.2130/), [the fix reference](https://bbs.minisforum.com/threads/the-iommu-issue-boot-and-usb-problems.2180/) (point 3 from the first post)
 
 ```sh
 # Fix minisforum USB issue (if required)
