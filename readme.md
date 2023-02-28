@@ -15,7 +15,7 @@ In most setup scenarios helper scripts are required. Installation:
 
 ```sh
 (branch=master; bash <(
-  dl_url=https://raw.githubusercontent.com/varlogerr/linux-snippets/${branch}/.ls-tools/install.sh
+  dl_url=https://raw.githubusercontent.com/varlogerr/linux-snippets/${branch}/.ls-tools/fetch.sh
   curl -fsL -o - "${dl_url}" 2>/dev/null || wget -qO- "${dl_url}"
 ) "${branch}")
 ```

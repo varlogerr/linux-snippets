@@ -60,7 +60,7 @@ TMP_DIR="$(set -x; mktemp -d --suffix .ls 2>/dev/null)" || {
   fail_with_msg 'Error installing LS tools to destination directory'
 }
 
-(set -x; chmod 0755 -- "${DEST_DIR}/install.sh" "${DEST_DIR}/bin/"*.sh 2>/dev/null) || {
+(set -x; chmod 0755 -- "${DEST_DIR}/fetch.sh" "${DEST_DIR}/bin/"*.sh 2>/dev/null) || {
   fail_with_msg 'Error chmod bins'
 }
 
@@ -81,7 +81,7 @@ __final_note_iife() {
   .  ${DEST_DIR}/bin/<TOOLNAME>
   .
     UPGRADE:
-  .  ${DEST_DIR}/install.sh
+  .  ${DEST_DIR}/fetch.sh
   .
     ADD LS TOOLS TO PATH (OPTIONAL):
   .   echo \". '${DEST_DIR}/pathadd.bash'\" >> ~/.bashrc
