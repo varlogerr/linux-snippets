@@ -16,7 +16,12 @@ pve_enable_nosubscription_repo() {
 
   local codename
   local repo
-  codename="$(grep VERSION_CODENAME /etc/os-release | cut -d= -f2)"
+  codename="$(
+    set -o pipefail
+    grep VERSION_CODENAME /etc/os-release | cut -d= -f2
+  )" || {
+    trap_fatal 1 "Can't detect version codename"
+  }
   repo="deb http://download.proxmox.com/debian/pve ${codename} pve-no-subscription"
 
   (set -x; echo "${repo}" | tee "${dest_file}" &>/dev/null) || {

@@ -4,7 +4,7 @@
 ---
 * [Install helper scripts](#install-helper-scripts)
 ---
-* [Fix Minisforum USB issue](#fix-minisforum-usb-issue)
+* [Fix Minisforum (AMD Ryzen) USB issue](#fix-amd-ryzen-usb-issue)
 ---
 * [Fix locale](#fix-locale)
 * [Post-install](#post-install)
@@ -24,13 +24,13 @@ See [Install helper scripts](../readme.md#pre-setup-install-helper-scripts)
 
 ---
 
-## Fix Minisforum USB issue
+## <a id="fix-amd-ryzen-usb-issue"></a> Fix Minisforum (AMD Ryzen) USB issue
 
-Fix AMD-based Minisforum machine USB issue. [The issue discussion](https://bbs.minisforum.com/threads/rear-usb-unstable-not-working.2130/), [the fix reference](https://bbs.minisforum.com/threads/the-iommu-issue-boot-and-usb-problems.2180/) (point 3 from the first post)
+Fix AMD Ryzen-based Minisforum machine USB issue. [The issue discussion](https://bbs.minisforum.com/threads/rear-usb-unstable-not-working.2130/), [the fix reference](https://bbs.minisforum.com/threads/the-iommu-issue-boot-and-usb-problems.2180/) (point 3 from the first post)
 
 ```sh
 # Fix minisforum USB issue (if required)
-~/ls-tools/bin/ls.pve.fix-minisforum-usb-issue.sh
+~/ls-tools/bin/ls.pve.fix-amd-ryzen-usb-issue.sh
 ```
 
 [To top]
