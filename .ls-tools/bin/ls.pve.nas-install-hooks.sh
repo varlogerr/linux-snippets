@@ -15,6 +15,9 @@
   ROOTFSDIR="$(realpath -- "${CURDIR}/../rootfs")"
   declare -r CURDIR LIBDIR ROOTFSDIR
 
+  declare -r HOOKS_SRCDIR=/root/.ls-tools-toolset/pve/hook
+  declare -r HOOKS_DESTDIR=/var/lib/vz/snippets
+
   for f in "${LIBDIR}"/*.sh; do . "${f}"; done
 
   pve_version_must_in "${PVE_SUPPORTED_VERSIONS[@]}"
@@ -22,22 +25,19 @@
 }
 
 install_hooks() {
-  local hooks_dir="/root/.ls-tools-toolset/pve/hook"
-  local dest_dir="/var/lib/vz/snippets"
-
   (set -x; cp -r "${ROOTFSDIR}/root/.ls-tools-toolset" /root &>/dev/null) || {
     trap_fatal 1 "Can't copy toolset"
   }
 
-  (set -x; mkdir -p "${dest_dir}" &>/dev/null) || {
+  (set -x; mkdir -p "${HOOKS_DESTDIR}" &>/dev/null) || {
     trap_fatal 1 "Can't create snippets directory"
   }
 
   local src_path
   local dest_path
   local dest_filename; for dest_filename in "${!DEST_SNIPPET_MAP[@]}"; do
-    dest_path="${dest_dir}/${dest_filename}"
-    src_path="${hooks_dir}/${DEST_SNIPPET_MAP[${dest_filename}]}"
+    dest_path="${HOOKS_DESTDIR}/${dest_filename}"
+    src_path="${HOOKS_SRCDIR}/${DEST_SNIPPET_MAP[${dest_filename}]}"
 
     (set -x; chmod 0755 "${src_path}" &>/dev/null) || {
       log_warn "Can't chmod nas snippet"

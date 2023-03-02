@@ -115,7 +115,7 @@ See [Install helper scripts](../readme.md#pre-setup-install-helper-scripts)
 
 ### <a id="setup-containers-init3"></a> Init3:
 * Start the machines `pct start <MACHINE_ID_PLACEHOLDER>`
-* Run `servers` playbook
+* Run `homelab` playbook
 * If required restore VPN confs with:
   ```sh
   lxc-attach <MACHINE_ID_PLACEHOLDER> -- /usr/local/bin/pivpn-restore.sh <GUEST_PATH_TO_BAK_PLACEHOLDER>
@@ -128,6 +128,7 @@ See [Install helper scripts](../readme.md#pre-setup-install-helper-scripts)
 ### <a id="devnotes-lxc-devmode"></a> LXC Devmode
 
 Development / testing in LXC containers doesn't always require mounts. To make hook aware of the machine devmode create an empty file `/root/.ls-tools-conf/pve/devmode/<MACHINE_ID>`. Example:
+
 ```sh
 # Enable devmode for container #103
 touch /root/.ls-tools-conf/pve/devmode/103
