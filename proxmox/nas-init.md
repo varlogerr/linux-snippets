@@ -114,12 +114,23 @@ See [Install helper scripts](../readme.md#pre-setup-install-helper-scripts)
 [To top]
 
 ### <a id="setup-containers-init3"></a> Init3:
+
 * Start the machines `pct start <MACHINE_ID_PLACEHOLDER>`
 * Run `homelab` playbook
 * If required restore VPN confs with:
   ```sh
   lxc-attach <MACHINE_ID_PLACEHOLDER> -- /usr/local/bin/pivpn-restore.sh <GUEST_PATH_TO_BAK_PLACEHOLDER>
   ```
+* DNS server configuration (if not yet configured):
+  * Adguard:
+    * **Filters** -> **DNS rewrites**
+    * Add entries for:
+      * `*.nas1.home`
+      * `*.servant1.home`
+  * Router configuration:
+    * Enable DHCP Server
+    * For *DNS 1* enter the servant1 IP
+    * For some routers other DNS servers but *DNS 1* must be disabled
 
 [To top]
 
