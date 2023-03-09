@@ -14,6 +14,15 @@
 
   for f in "${LIBDIR}"/*.sh; do . "${f}"; done
 
+  print_help() {
+    text_clean "
+      Fix USB issue in AMD Ryzen.
+      Not directly related to PVE
+    "
+    exit 0
+  }
+  trap_help_opt "${@}" && print_help
+
   pve_version_must_in "${PVE_SUPPORTED_VERSIONS[@]}"
   sys_must_root
 }

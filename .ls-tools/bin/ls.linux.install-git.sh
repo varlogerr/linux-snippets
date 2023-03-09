@@ -13,6 +13,12 @@
 
   for f in "${LIBDIR}"/*.sh; do . "${f}"; done
 
+  print_help() {
+    echo "Install git"
+    exit 0
+  }
+  trap_help_opt "${@}" && print_help
+
   sys_dist_must_id_or_like_in "${SYS_SUPPORTED_ID_OR_LIKE[@]}"
   sys_must_root
 }

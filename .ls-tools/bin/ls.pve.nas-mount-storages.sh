@@ -34,6 +34,12 @@
 
   for f in "${LIBDIR}"/*.sh; do . "${f}"; done
 
+  print_help() {
+    echo "Mount storage devices. The physical devices must be mounted in advance"
+    exit 0
+  }
+  trap_help_opt "${@}" && print_help
+
   pve_version_must_in "${PVE_SUPPORTED_VERSIONS[@]}"
   sys_must_root
 }

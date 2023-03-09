@@ -8,6 +8,12 @@
 
   for f in "${LIBDIR}"/*.sh; do . "${f}"; done
 
+  print_help() {
+    echo "Disable subscription nag in PVE UI"
+    exit 0
+  }
+  trap_help_opt "${@}" && print_help
+
   pve_version_must_in "${PVE_SUPPORTED_VERSIONS[@]}"
   sys_must_root
 }
