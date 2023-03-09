@@ -22,4 +22,11 @@
       The platform is required to be PVE of the following versions:
     " "$(printf -- '* %s\n' "${@}")"
   }
+
+  pve_ls_supported_versions() {
+    printf -- '%s\n%s\n' \
+      "SUPPORTED PVE VERSIONS" \
+      "======================"
+    printf -- '* %s\n' "${PVE_SUPPORTED_VERSIONS[@]}"
+  }
 }

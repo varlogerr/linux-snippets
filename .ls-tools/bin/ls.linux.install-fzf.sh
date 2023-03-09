@@ -17,10 +17,14 @@
   for f in "${LIBDIR}"/*.sh; do . "${f}"; done
 
   print_help() {
-    echo "Install fzf"
-    exit 0
+    text_decore "
+      Install fzf
+     .
+      $(sys_ls_supported_platforms)
+    "
   }
-  trap_help_opt "${@}" && print_help
+
+  trap_help_opt "${@}" && { print_help; exit 0; }
 
   sys_dist_must_id_or_like_in "${SYS_SUPPORTED_ID_OR_LIKE[@]}"
   sys_must_root

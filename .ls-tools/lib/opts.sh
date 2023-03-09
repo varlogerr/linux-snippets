@@ -1,0 +1,45 @@
+{ # GLOBALS
+  declare -A OPTS
+}
+
+{ # FUNCTIONS
+  # Trap and process `--genconf` flag and `CONFFILE` arg
+  # USAGE:
+  #   opts_trap_genconf [OPTION...] \
+  #     [--genconf] [CONFFILE]
+  # RC:
+  # * 0 - genconf flag is detected
+  # * 1 - no genconf flag
+  # BLOBALS:
+  #   OPTS[genconf]
+  #     (boolean) genconf flag is detected
+  #   OPTS[conffile]
+  #     (string) conffile path
+  opts_trap_genconf() {
+    local endopts=false
+    local rc=1
+
+    local text_with_confblock="${1}"
+    local confblock_tag="${2}"
+
+    OPTS+=(
+      [genconf]=false
+      # [conffile]=
+    )
+
+    while :; do
+      [[ -n "${1+x}" ]] || break
+      ${endopts} && arg='*' || arg="${1}"
+
+      case "${arg}" in
+        --        ) endopts=true ;;
+        --genconf ) OPTS[genconf]=true; rc=0 ;;
+        *         ) OPTS[conffile]="${1}"
+      esac
+
+      shift
+    done
+
+    return ${rc}
+  }
+}

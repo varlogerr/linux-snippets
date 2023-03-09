@@ -128,4 +128,11 @@
 
     return 1
   }
+
+  sys_ls_supported_platforms() {
+    printf -- '%s\n%s\n' \
+      "SUPPORTED PLATFORMS" \
+      "==================="
+    printf -- '* %s\n' "${SYS_SUPPORTED_ID_OR_LIKE[@]}"
+  }
 }

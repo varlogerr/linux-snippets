@@ -11,13 +11,15 @@
   for f in "${LIBDIR}"/*.sh; do . "${f}"; done
 
   print_help() {
-    text_clean "
+    text_decore "
       Fix locale.
       Not directly related to PVE
+     .
+      $(pve_ls_supported_versions)
     "
-    exit 0
   }
-  trap_help_opt "${@}" && print_help
+
+  trap_help_opt "${@}" && { print_help; exit 0; }
 
   pve_version_must_in "${PVE_SUPPORTED_VERSIONS[@]}"
   sys_must_root

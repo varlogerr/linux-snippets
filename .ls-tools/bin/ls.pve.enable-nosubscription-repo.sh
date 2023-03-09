@@ -8,10 +8,14 @@
   for f in "${LIBDIR}"/*.sh; do . "${f}"; done
 
   print_help() {
-    echo "Enable nosubscription repository in PVE"
-    exit 0
+    text_decore "
+      Enable nosubscription repository in PVE
+     .
+      $(pve_ls_supported_versions)
+    "
   }
-  trap_help_opt "${@}" && print_help
+
+  trap_help_opt "${@}" && { print_help; exit 0; }
 
   pve_version_must_in "${PVE_SUPPORTED_VERSIONS[@]}"
   sys_must_root

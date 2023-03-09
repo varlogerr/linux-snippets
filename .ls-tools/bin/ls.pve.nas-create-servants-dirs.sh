@@ -21,10 +21,14 @@
   for f in "${LIBDIR}"/*.sh; do . "${f}"; done
 
   print_help() {
-    echo "Create servants directories on NAS host machine"
-    exit 0
+    text_decore "
+      Create servants directories on NAS host machine
+     .
+      $(pve_ls_supported_versions)
+    "
   }
-  trap_help_opt "${@}" && print_help
+
+  trap_help_opt "${@}" && { print_help; exit 0; }
 
   pve_version_must_in "${PVE_SUPPORTED_VERSIONS[@]}"
   sys_must_root
