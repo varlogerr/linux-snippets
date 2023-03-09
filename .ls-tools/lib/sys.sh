@@ -44,7 +44,7 @@
     [[ " ${search_ids[@]} " == *" ${id} "* ]]
   }
 
-  # Print current distro id like in lowercase
+  # Print current distro id like in lowercase, one like at a line
   #
   # RC:
   # * 0 - distro id like is detected and printed to stdout
@@ -52,7 +52,9 @@
   sys_dist_id_like() {
     local -l id_like; id_like="$(
       set -o pipefail
-      grep '^ID_LIKE=.\+' /etc/os-release 2>/dev/null | cut -d= -f2-
+      grep '^ID_LIKE=.\+' /etc/os-release 2>/dev/null | cut -d= -f2- \
+      | sed -e 's/^"\([^"]*\)"$/\1/' -e "s/^'\\([^']*\\)'\$/\\1/" \
+      | tr ' ' '\n' | grep -v '^\s*$'
     )" || return $?
 
     printf '%s\n' "${id_like}"
@@ -69,7 +71,8 @@
   sys_dist_id_like_in() {
     local -l search_ids="${@}"
     local id_like; id_like="$(sys_dist_id_like)" || return $?
-    [[ " ${search_ids[@]} " == *" ${id_like} "* ]]
+    tr ' ' '\n' <<< "${search_ids[@]}" | grep -v '^\s*$' \
+    | grep -qFxf <(printf -- '%s\n' "${id_like}")
   }
 
   # Check if the current distro id or id like is in range from input
