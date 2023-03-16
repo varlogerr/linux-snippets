@@ -18,7 +18,13 @@
 }
 
 pve_upgrade() {
-  (set -x; apt-get update; apt-get dist-upgrade -y)
+  (
+    set -x
+    apt-get autoclean -y
+    apt-get autoremove -y
+    apt-get update
+    apt-get dist-upgrade -y
+  )
 }
 
 print_post_info() {
