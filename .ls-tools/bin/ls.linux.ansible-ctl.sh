@@ -57,14 +57,13 @@ configure_repo() {
       set -x
       gpg --dearmor | tee "${gpg_key_file}" >/dev/null
       cat <(set +x; echo "${repo_file_content}") | tee "${repo_file}" >/dev/null
-      apt-get update
     )
   )
 }
 
 ansible_ctl_install() {
   configure_repo
-  (set -x; apt-get install -y "${TOOLS[@]}")
+  (set -x; apt-get update; apt-get install -y "${TOOLS[@]}")
 }
 
 ansible_ctl_install
