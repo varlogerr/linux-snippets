@@ -3,14 +3,14 @@
 }
 
 { # FUNCTIONS
-  # Trap and process `--genconf` flag and `CONFFILE` arg
+  # Trap `--genconf` flag
   # USAGE:
   #   opts_trap_genconf [OPTION...] \
   #     [--genconf] [CONFFILE]
   # RC:
   # * 0 - genconf flag is detected
   # * 1 - no genconf flag
-  # BLOBALS:
+  # GLOBALS:
   #   OPTS[genconf]
   #     (boolean) genconf flag is detected
   #   OPTS[conffile]
@@ -19,22 +19,19 @@
     local endopts=false
     local rc=1
 
-    local text_with_confblock="${1}"
-    local confblock_tag="${2}"
-
     OPTS+=(
       [genconf]=false
       # [conffile]=
     )
 
-    while :; do
+    local arg; while :; do
       [[ -n "${1+x}" ]] || break
       ${endopts} && arg='*' || arg="${1}"
 
       case "${arg}" in
         --        ) endopts=true ;;
         --genconf ) OPTS[genconf]=true; rc=0 ;;
-        *         ) OPTS[conffile]="${1}"
+        *         ) OPTS[conffile]="${1}" ;;
       esac
 
       shift
