@@ -22,6 +22,13 @@ disable_enterprise_repo() {
     set -x
     sed -i "s/^\s*deb/#deb/g" /etc/apt/sources.list.d/pve-enterprise.list &>/dev/null
   ) || trap_fatal 1 "Can't disable enterprise repo"
+
+  if [[ "$(pve_get_version)" -ge 8 ]]; then
+    (
+      set -x
+      sed -i "s/^\s*deb/#deb/g" /etc/apt/sources.list.d/ceph.list &>/dev/null
+    ) || trap_fatal 1 "Can't disable enterprise repo"
+  fi
 }
 
 disable_enterprise_repo

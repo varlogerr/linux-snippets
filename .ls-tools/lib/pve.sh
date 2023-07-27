@@ -1,5 +1,5 @@
 { # CONSTANTS
-  declare -ra PVE_SUPPORTED_VERSIONS=(7)
+  declare -ra PVE_SUPPORTED_VERSIONS=(7 8)
 }
 
 { # FUNCTIONS
@@ -10,9 +10,7 @@
   #   # * 1 - version doesn't match
   pve_version_in() {
     local req_versions="${@}"
-    local actual_version; actual_version="$(
-      pveversion 2>/dev/null | cut -d'/' -f2 | cut -d'.' -f1
-    )"
+    local actual_version; actual_version="$(pve_get_version)"
 
     [[ (-n "${actual_version}" && " ${req_versions[@]} " == *" ${actual_version} "*) ]]
   }
@@ -21,5 +19,9 @@
     pve_version_in "${@}" || trap_fatal --decore $? "
       The platform is required to be PVE of the following versions:
     " "$(printf -- '* %s\n' "${@}")"
+  }
+
+  pve_get_version() {
+    pveversion 2>/dev/null | cut -d'/' -f2 | cut -d'.' -f1
   }
 }
